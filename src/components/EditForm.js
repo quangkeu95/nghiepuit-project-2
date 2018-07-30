@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as action from '../actions/index';
 
 class EditForm extends Component {
   constructor(props) {
@@ -82,4 +85,10 @@ class EditForm extends Component {
   }
 }
 
-export default EditForm;
+function mapDispatchToProps(dispatch, props) {
+	return bindActionCreators({
+		addToDo: action.addToDo
+	}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(EditForm);

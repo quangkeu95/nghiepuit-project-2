@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ToDoItem from './ToDoItem';
 import { ALL_STATUS, ACTIVE_STATUS, DEACTIVE_STATUS } from '../constants/constants';
 
+import { connect } from 'react-redux';
+
 class DataTable extends Component {
   constructor(props) {
     super(props);
@@ -43,9 +45,9 @@ class DataTable extends Component {
   }
 
   render() {
-    const { toDoList } = this.props;
+    const { tasks } = this.props;
 
-    const data = toDoList.map((item, index) => 
+    const data = tasks.map((item, index) => 
       <ToDoItem 
         key={item.id} 
         index={index} 
@@ -100,4 +102,10 @@ class DataTable extends Component {
   }
 }
 
-export default DataTable;
+function mapStateToProps(state) {
+	return {
+		tasks: state.tasks
+	}
+}
+
+export default connect(mapStateToProps, null)(DataTable);
