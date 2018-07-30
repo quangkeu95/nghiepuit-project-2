@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as action from '../actions/index';
 
 class ToDoItem extends Component {
   render() {
-    const item = this.props.toDoItem;
+	const item = this.props.toDoItem;
+	
+	const { showEditForm } = this.props;
     
     return (
       <tr className="text-center">
@@ -15,7 +20,7 @@ class ToDoItem extends Component {
           {item.status === "deactive" && <span className="badge badge-secondary">{item.status}</span>}
         </td>
         <td>
-          <button className="btn btn-warning mr-2" onClick={() => this.props.editItem(true, item)}>
+          <button className="btn btn-warning mr-2" onClick={() => showEditForm(true, item)}>
             <span className="fa fa-edit mr-2"></span>
             Edit
           </button>
@@ -29,4 +34,10 @@ class ToDoItem extends Component {
   }
 }
 
-export default ToDoItem;
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({
+		showEditForm: action.openForm
+	}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(ToDoItem);

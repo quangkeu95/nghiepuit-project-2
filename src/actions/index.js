@@ -17,7 +17,8 @@ export function openForm(isEdit, task) {
     if (isEdit) {
         return {
             type: types.OPEN_FORM,
-            task: task
+            task: task,
+            isEdit: isEdit
         }
     } else {
         return {
@@ -26,7 +27,14 @@ export function openForm(isEdit, task) {
                 id: "",
                 name: "",
                 status: "active"
-            }
+            },
+            isEdit: isEdit
         }
+    }
+}
+
+export function closeForm() {
+    return {
+        type: types.CLOSE_FORM
     }
 }

@@ -14,10 +14,13 @@ class EditForm extends Component {
   }
 
   componentDidMount() {
+	const { editing } = this.props;
+	const { editingTask } = editing;
+
     this.setState({
-      id: this.props.item.id,
-      name: this.props.item.name,
-      status: this.props.item.status
+      	id: editingTask.id,
+    	name: editingTask.name,
+      	status: editingTask.status
     });
   }
 
@@ -34,12 +37,17 @@ class EditForm extends Component {
   }
 
   submitForm(event) {
+    const { addToDo } = this.props; 
+
     event.preventDefault();
     const action = Object.assign({}, this.state);
-    this.props.addToDo(action);
+    addToDo(action);
   }
 
   render() {
+    const { closeEditForm } = this.props;
+	const { isEdit } = this.props.editing;
+
     return (
       <div className="card">
         <div className="card-header bg-info text-white">
@@ -71,10 +79,10 @@ class EditForm extends Component {
           <div className="text-center">
             <button type="submit" form="editForm" className="btn btn-warning mx-1">
               <span className="fa fa-plus mr-2"></span>
-              {!this.props.isEdit && <span>Add</span>}
-              {this.props.isEdit && <span>Save</span>}
+              {!isEdit && <span>Add</span>}
+              {isEdit && <span>Save</span>}
             </button>
-            <button className="btn btn-danger mx-1" onClick={this.props.closeEditForm}>
+            <button className="btn btn-danger mx-1" onClick={closeEditForm}>
               <span className="fa fa-ban mr-2"></span>
               Cancel
             </button>
@@ -85,10 +93,17 @@ class EditForm extends Component {
   }
 }
 
+function mapStateToProps(state) {
+	return {
+		editing: state.editing
+	};
+}
+
 function mapDispatchToProps(dispatch, props) {
 	return bindActionCreators({
-		addToDo: action.addToDo
+		addToDo: action.addToDo,
+		closeEditForm: action.closeForm
 	}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(EditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EditForm);
