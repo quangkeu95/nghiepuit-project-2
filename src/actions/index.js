@@ -13,6 +13,34 @@ export function addToDo(task) {
     }
 }
 
+export function editToDo(task) {
+    return {
+        type: types.EDIT_TODO,
+        task: task
+    }
+}
+
+export function deleteToDo(task) {
+    return {
+        type: types.DELETE_TODO,
+        task: task
+    }
+}
+
+export function currentNameChange(name) {
+    return {
+        type: types.CURRENT_NAME_CHANGE,
+        name: name
+    }
+}
+
+export function currentStatusChange(status) {
+    return {
+        type: types.CURRENT_STATUS_CHANGE,
+        status: status
+    }
+}
+
 export function openForm(isEdit, task) {
     if (isEdit) {
         return {

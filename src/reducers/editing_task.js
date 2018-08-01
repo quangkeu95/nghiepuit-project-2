@@ -29,6 +29,27 @@ export default function myReducer(state=initialState, action) {
                 ...state,
                 editFormVisible: false
             }
+        case types.EDIT_TODO:
+            return {
+                ...state,
+                editFormVisible: false
+            }
+        case types.CURRENT_NAME_CHANGE:
+            return {
+                ...state,
+                editingTask: {
+                    ...state.editingTask,
+                    name: action.name
+                }
+            }
+        case types.CURRENT_STATUS_CHANGE:
+            return {
+                ...state,
+                editingTask: {
+                    ...state.editingTask,
+                    status: action.status
+                }
+            }
         default:
             return state;
     }

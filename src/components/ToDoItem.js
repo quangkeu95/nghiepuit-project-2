@@ -7,7 +7,7 @@ class ToDoItem extends Component {
   render() {
 	const item = this.props.toDoItem;
 	
-	const { showEditForm } = this.props;
+	const { showEditForm, deleteToDo } = this.props;
     
     return (
       <tr className="text-center">
@@ -24,7 +24,7 @@ class ToDoItem extends Component {
             <span className="fa fa-edit mr-2"></span>
             Edit
           </button>
-          <button className="btn btn-danger" onClick={() => this.props.deleteItem(item)}>
+          <button className="btn btn-danger" onClick={() => deleteToDo(item)}>
             <span className="fa fa-trash mr-2"></span>
             Delete
           </button>
@@ -36,7 +36,8 @@ class ToDoItem extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		showEditForm: action.openForm
+		showEditForm: action.openForm,
+		deleteToDo: action.deleteToDo
 	}, dispatch);
 }
 
