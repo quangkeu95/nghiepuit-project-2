@@ -1,53 +1,54 @@
 import React, { Component } from 'react';
 import ToDoItem from './ToDoItem';
-import { ALL_STATUS, ACTIVE_STATUS, DEACTIVE_STATUS } from '../constants/constants';
-
+import * as action from '../actions/index';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 class DataTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filter: {
-        filterName: "",
-        filterStatus: ALL_STATUS
-      }
-    }
-  }
-
-  onFilter(event) {
-    const { onFilter } = this.props;
-
-    if (event.target.name === 'filterName') {
-      const filterName = event.target.value;
-
-      this.setState({
-        filter: {
-          ...this.state.filter,
-          filterName: filterName
-        }
-      }, () => {
-        onFilter(this.state.filter);
-      });
-      
-    } else if (event.target.name === 'filterStatus') {
-      const filterStatus = event.target.value;
-
-      this.setState({
-        filter: {
-          ...this.state.filter,
-          filterStatus: filterStatus
-        }
-      }, () => {
-        onFilter(this.state.filter);
-      });
-    }
-  }
 
   render() {
-    const { tasks } = this.props;
+    const { tasks, filter, onFilter, sort } = this.props;
+	const { sortType } = sort;
 
-    const data = tasks.map((item, index) => 
+	let filterData = tasks;
+
+	if (filter) {
+		if (filter.filterName) {
+			filterData = tasks.filter(item => {
+				return item.name.toLowerCase().indexOf(filter.filterName) !== -1;
+			});
+		} 
+
+		if (filter.filterStatus) {
+			filterData = filterData.filter(item => {
+				if (filter.filterStatus === "active") {
+					return item.status === "active";
+				} else if (filter.filterStatus === "deactive") {
+					return item.status === "deactive";
+				}
+				return item;
+			});
+		}
+	}
+
+	switch(sortType) {
+		case 1:
+			filterData = _.orderBy(filterData, ['name'], ['asc']);
+			break;
+		case 2:
+			filterData = _.orderBy(filterData, ['name'], ['desc']);
+			break;
+		case 3:
+			filterData = _.orderBy(filterData, ['status'], ['asc']);
+			break;
+		case 4:
+			filterData = _.orderBy(filterData, ['status'], ['desc']);
+			break;
+	}
+	
+
+    const data = filterData.map((item, index) => 
       <ToDoItem 
         key={item.id} 
         index={index} 
@@ -76,19 +77,19 @@ class DataTable extends Component {
                   <input 
                     type="text" 
                     name="filterName"
-                    value={ this.state.filter.filterName }
+                    value={ filter.filterName }
                     className="form-control"
-                    onChange={ this.onFilter.bind(this) } />
+                    onChange={(event) => onFilter(event) } />
                 </td>
                 <td>
                   <select 
                     name="filterStatus"
-                    value= { this.state.filter.filterStatus }
+                    value= { filter.filterStatus }
                     className="custom-select" 
-                    onChange={ this.onFilter.bind(this) }>
-                    <option value={ALL_STATUS}>All</option>
-                    <option value={ACTIVE_STATUS}>Active</option>
-                    <option value={DEACTIVE_STATUS}>Deactive</option>
+                    onChange={(event) => onFilter(event) }>
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="deactive">Deactive</option>
                   </select>
                 </td>
                 <td></td>
@@ -104,8 +105,16 @@ class DataTable extends Component {
 
 function mapStateToProps(state) {
 	return {
-		tasks: state.tasks
+		tasks: state.tasks,
+		filter: state.filter,
+		sort: state.sort
 	}
 }
 
-export default connect(mapStateToProps, null)(DataTable);
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({
+		onFilter: action.onFilter
+	}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataTable);

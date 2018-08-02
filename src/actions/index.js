@@ -41,6 +41,29 @@ export function currentStatusChange(status) {
     }
 }
 
+export function onFilter(event) {
+    if (event.target.name === 'filterName') {
+        const filterName = event.target.value;
+        return {
+            type: types.FILTER_NAME_CHANGE,
+            filterName: filterName
+        }
+    } else if (event.target.name === 'filterStatus') {
+        const filterStatus = event.target.value;
+        return {
+            type: types.FILTER_STATUS_CHANGE,
+            filterStatus: filterStatus
+        }
+    }
+}
+
+export function onSort(sortType) {
+    return {
+        type: types.SORT_TASK,
+        sortType: sortType
+    }
+}
+
 export function openForm(isEdit, task) {
     if (isEdit) {
         return {
