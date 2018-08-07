@@ -1,17 +1,14 @@
-import * as types from '../constants/ActionTypes';
+import { handleActions } from 'redux-actions';
 
 const initialState = {
     sortType: 1       // a - z
 }
 
-export default function myReducer(state=initialState, action) {
-    switch(action.type) {
-        case types.SORT_TASK:
-            return {
-                ...state,
-                sortType: action.sortType
-            };
-        default:
-            return state;
-    }
-}
+const reducer = handleActions({
+    SORT_TASK: (state, action) => ({
+        ...state,
+        sortType: action.payload
+    })
+}, initialState);
+
+export default reducer;

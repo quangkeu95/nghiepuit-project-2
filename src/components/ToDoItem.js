@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as action from '../actions/index';
+import actions from '../actions/index';
 
 class ToDoItem extends Component {
   render() {
@@ -36,8 +36,8 @@ class ToDoItem extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		showEditForm: action.openForm,
-		deleteToDo: action.deleteToDo
+		showEditForm: actions.openForm,
+		deleteToDo: actions.deleteTodo
 	}, dispatch);
 }
 

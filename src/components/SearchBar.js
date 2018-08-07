@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as action from '../actions/index';
+import actions from '../actions/index';
 
 import { bindActionCreators } from 'redux'; 
 import { connect } from 'react-redux';
@@ -57,7 +57,7 @@ class SearchBar extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		onSort: action.onSort
+		onSort: actions.sortTask
 	}, dispatch);
 }
 

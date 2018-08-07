@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes';
+import { handleActions } from 'redux-actions';
 
 const initialState = {
     editFormVisible: false,
@@ -10,47 +10,41 @@ const initialState = {
     isEdit: false
 };
 
-export default function myReducer(state=initialState, action) {
-    switch(action.type) {
-        case types.OPEN_FORM:
-            const newState = {
-                editFormVisible: true,
-                editingTask: Object.assign({}, action.task),
-                isEdit: action.isEdit
-            };
-            return newState;
-        case types.CLOSE_FORM:
-            return {
-                ...state,
-                editFormVisible: false
-            }
-        case types.ADD_TODO:
-            return {
-                ...state,
-                editFormVisible: false
-            }
-        case types.EDIT_TODO:
-            return {
-                ...state,
-                editFormVisible: false
-            }
-        case types.CURRENT_NAME_CHANGE:
-            return {
-                ...state,
-                editingTask: {
-                    ...state.editingTask,
-                    name: action.name
-                }
-            }
-        case types.CURRENT_STATUS_CHANGE:
-            return {
-                ...state,
-                editingTask: {
-                    ...state.editingTask,
-                    status: action.status
-                }
-            }
-        default:
-            return state;
-    }
-}
+const reducer = handleActions({
+    OPEN_FORM: (state, action) => {
+        const newState = {
+            editFormVisible: true,
+            editingTask: Object.assign({}, action.payload.task),
+            isEdit: action.payload.isEdit
+        };
+        return newState;
+    },
+    CLOSE_FORM: (state, action) => ({
+        ...state,
+        editFormVisible: false
+    }),
+    ADD_TODO: (state, action) => ({
+        ...state,
+        editFormVisible: false
+    }),
+    EDIT_TODO: (state, action) => ({
+        ...state,
+        editFormVisible: false
+    }),
+    CHANGE_CURRENT_NAME: (state, action) => ({
+        ...state,
+        editingTask: {
+            ...state.editingTask,
+            name: action.payload
+        }
+    }),
+    CHANGE_CURRENT_STATUS: (state, action) => ({
+        ...state,
+        editingTask: {
+            ...state.editingTask,
+            status: action.payload
+        }
+    })
+}, initialState);
+
+export default reducer;

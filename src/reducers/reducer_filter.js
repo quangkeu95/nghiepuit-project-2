@@ -1,23 +1,19 @@
-import * as types from '../constants/ActionTypes';
+import { handleActions } from 'redux-actions';
 
 const initialState = {
     filterName: "",
     filterStatus: "all"
 }
 
-export default function myReducer(state=initialState, action) {
-    switch(action.type) {
-        case types.FILTER_NAME_CHANGE:
-            return {
-                ...state,
-                filterName: action.filterName
-            };
-        case types.FILTER_STATUS_CHANGE:
-            return {
-                ...state,
-                filterStatus: action.filterStatus
-            };
-        default:
-            return state;
-    }
-}
+const reducer = handleActions({
+    CHANGE_FILTER_NAME: (state, action) => ({
+        ...state,
+        filterName: action.payload
+    }),
+    CHANGE_FILTER_STATUS: (state, action) => ({
+        ...state,
+        filterStatus: action.payload
+    })
+}, initialState)
+
+export default reducer;

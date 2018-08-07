@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as action from '../actions/index';
+import actions from '../actions/index';
 
 class ButtonAdd extends Component {
   render() {
@@ -22,7 +22,7 @@ class ButtonAdd extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		showEditForm: action.openForm
+		showEditForm: actions.openForm
 	}, dispatch);
 }
 

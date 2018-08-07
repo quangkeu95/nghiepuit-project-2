@@ -1,51 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as action from '../actions/index';
+import actions from '../actions/index';
 
 class EditForm extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			id: "",
-			name: "",
-			status: "active"
-		}
-	}
-
-	componentDidMount() {
-		const { editing } = this.props;
-		const { editingTask } = editing;
-
-		this.setState({
-			id: editingTask.id,
-			name: editingTask.name,
-			status: editingTask.status
-		});
-	}
-
 	onNameChange(value) {
-		const { currentNameChange } = this.props;
+		const { changeCurrentName } = this.props;
 
-		currentNameChange(value);
+		changeCurrentName(value);
 	}
 
 	onStatusChange(value) {
-		const { currentStatusChange } = this.props;
+		const { changeCurrentStatus } = this.props;
 
-		currentStatusChange(value);
+		changeCurrentStatus(value);
 	}
 
   	submitForm(event) {
-		const { addToDo, editToDo } = this.props; 
+		const { addTodo, editTodo } = this.props; 
 		const { isEdit, editingTask} = this.props.editing;
 		
 		event.preventDefault();
 		const action = Object.assign({}, editingTask);
 		if (isEdit) {
-			editToDo(action);
+			editTodo(action);
 		} else {
-			addToDo(action);
+			addTodo(action);
 		}	
 	}
 
@@ -106,11 +86,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch, props) {
 	return bindActionCreators({
-		addToDo: action.addToDo,
-		editToDo: action.editToDo,
-		closeEditForm: action.closeForm,
-		currentNameChange: action.currentNameChange,
-		currentStatusChange: action.currentStatusChange
+		addTodo: actions.addTodo,
+		editTodo: actions.editTodo,
+		closeEditForm: actions.closeForm,
+		changeCurrentName: actions.changeCurrentName,
+		changeCurrentStatus: actions.changeCurrentStatus
 	}, dispatch);
 }
 

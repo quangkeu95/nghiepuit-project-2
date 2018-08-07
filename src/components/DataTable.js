@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ToDoItem from './ToDoItem';
-import * as action from '../actions/index';
+import actions from '../actions/index';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -8,8 +8,8 @@ import _ from 'lodash';
 class DataTable extends Component {
 
   render() {
-    const { tasks, filter, onFilter, sort } = this.props;
-	const { sortType } = sort;
+    const { tasks, filter, changeFilterName, changeFilterStatus, sort } = this.props;
+    const { sortType } = sort;
 
 	let filterData = tasks;
 
@@ -79,14 +79,14 @@ class DataTable extends Component {
                     name="filterName"
                     value={ filter.filterName }
                     className="form-control"
-                    onChange={(event) => onFilter(event) } />
+                    onChange={(event) => changeFilterName(event.target.value) } />
                 </td>
                 <td>
                   <select 
                     name="filterStatus"
                     value= { filter.filterStatus }
                     className="custom-select" 
-                    onChange={(event) => onFilter(event) }>
+                    onChange={(event) => changeFilterStatus(event.target.value) }>
                     <option value="all">All</option>
                     <option value="active">Active</option>
                     <option value="deactive">Deactive</option>
@@ -113,7 +113,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
-		onFilter: action.onFilter
+		changeFilterName: actions.changeFilterName,
+		changeFilterStatus: actions.changeFilterStatus
 	}, dispatch);
 }
 
